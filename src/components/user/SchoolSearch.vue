@@ -42,7 +42,7 @@
                     <v-list-item-title class="moveShowing">{{ item.name }}</v-list-item-title>
                     <v-list-item-subtitle class="moveShowing">{{ item.address }}</v-list-item-subtitle>
                 </v-list-item-content>
-
+                
                 <v-list-item-action>
                     <v-btn
                         depressed

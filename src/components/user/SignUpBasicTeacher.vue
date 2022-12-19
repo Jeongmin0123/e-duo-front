@@ -127,6 +127,7 @@
                     </v-col>
                 </v-row>
                 <v-row v-if="this.phoneCertificationCopy">
+                    <div style='position:relative' class='layout_tmp'>
                     <v-col cols="12">
                         <v-text-field 
                             v-model="userPhoneCheck" 
@@ -136,7 +137,10 @@
                             append-icon=mdi-send
                             @click:append='confirmPhone'
                         ></v-text-field>
+                        <div v-if="counter>60" :class="[counterOn ? counter < 10 ? 'counter alert' : 'counter' : 'disable counter']">남은시간 : {{parseInt(this.counter/60)}} 분 {{this.counter%60}} 초</div>
+                        <div v-else :class="[counterOn ? counter < 10 ? 'counter alert' : 'counter' : 'disable counter']">남은시간 : {{this.counter}} 초</div>
                     </v-col>
+                    </div>
                 </v-row>
                 <v-row>
                     <v-col cols="12" >
@@ -166,13 +170,13 @@
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
+let timerId = null
 export default {
     name: "SignUpBasicTeacher",
     computed: {
         ...mapState("userStore", ["emailCertification", "phoneCertification", "userInfo"]),
     },
     created(){
-        console.log('create', this.userInfo);
         if(this.userInfo){
             this.userEmail = this.userInfo.userId;
             this.finalValidateUserEmail = true;
@@ -180,8 +184,6 @@ export default {
     },
     watch:{
         userImage(val){
-            console.log(this.userInfo);
-            // console.log(this.userInfo.userId);
             console.log(val);
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -193,6 +195,8 @@ export default {
 
     data() {
         return {
+            counterOn: false,
+            counter: 0,
             dialog: false,
             state: 'ins',
             isIdFormat : false,
@@ -253,7 +257,25 @@ export default {
             // await this.phoneSending(this.userPhone);
             this.userPhoneCheck = '';
             this.finalValidateUserPhone = false;
+            this.counterOn = true;
             this.phoneCertificationCopy = '1234';
+            this.isPhoneFormat = false;
+            this.counter = 150;
+
+            if(timerId){
+                clearTimeout(timerId)
+            }
+            timerId = setInterval(() => {
+                this.counter -= 1;
+
+                if(this.counter <= 0){
+                    this.phoneCertificationCopy = '';
+                    this.isPhoneFormat = true;
+                    clearInterval(timerId)
+                    timerId = null;
+                    this.counterOn = false;
+                }
+            } , 1000)
             // this.phoneCertificationCopy = this.phoneCertification;
         },
         confirmEmail(){
@@ -269,6 +291,9 @@ export default {
             if(this.userPhoneCheck == this.phoneCertificationCopy){
                 alert('확인되었습니다');
                 this.finalValidateUserPhone = true;
+                clearInterval(timerId);
+                timerId = null;
+                this.counterOn = false;
             }else{
                 alert('인증번호가 틀렸습니다.');
                 this.userPhoneCheck = '';

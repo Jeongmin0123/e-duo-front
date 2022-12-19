@@ -1,5 +1,6 @@
 .row{
     justify-content: center;
+    
 }
 .modal-background{
     background-color: rgba(0,0,0,0.3);
@@ -77,4 +78,26 @@
 
 .v-date-picker-table tbody tr td:nth-child(7).v-btn__content {
 color: #ff7451;
+}
+
+
+.layout_tmp{
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.counter{
+    position: absolute;
+    bottom : 10px;
+    left: 10px;
+    color: #4486ff;
+    font-size: 14px;
+    font-weight:500;
+}
+.alert{
+    color : #ff3333;
+}
+.disable{
+    display: none;
 }

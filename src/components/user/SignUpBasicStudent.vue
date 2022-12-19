@@ -128,6 +128,7 @@
                     </v-col>
                 </v-row>
                 <v-row v-if="this.phoneCertificationCopy">
+                    <div style='position:relative' class='layout_tmp'>
                     <v-col cols="12">
                         <v-text-field 
                             v-model="userPhoneCheck" 
@@ -137,7 +138,10 @@
                             append-icon=mdi-send
                             @click:append='confirmPhone'
                         ></v-text-field>
+                        <div v-if="counter>60" :class="[counterOn ? counter < 10 ? 'counter alert' : 'counter' : 'disable counter']">남은시간 : {{parseInt(this.counter/60)}} 분 {{this.counter%60}} 초</div>
+                        <div v-else :class="[counterOn ? counter < 10 ? 'counter alert' : 'counter' : 'disable counter']">남은시간 : {{this.counter}} 초</div>
                     </v-col>
+                    </div>
                 </v-row>
                 <v-row>
                     <v-col cols="12">
@@ -221,6 +225,7 @@
                                     label="생년월일 입력"
                                     hint="클릭해서 설정하십시오"
                                     persistent-hint
+                                    :rules="userBirth_rule"
                                     append-icon=mdi-calendar
                                     readonly
                                     v-on="on"
@@ -239,7 +244,7 @@
                             </v-menu>
                     </v-col>
                 </v-row>
-                <v-btn @click="signUp" :disabled="!isFormValid || !finalValidateUserPhone || !finalValidateUserEmail">회원가입</v-btn>
+                <v-btn @click="signUp" :disabled="!isFormValid || !finalValidateUserPhone || !finalValidateUserEmail || userBirth==null">회원가입</v-btn>
                 <div v-if="isModalOn" class='modal-background'>
                     <school-search class='school-modal-container' :userSchool="userSchool" :setModalOn="setModalOn" @setSchool="setSchool"></school-search>
                 </div>
@@ -250,6 +255,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import SchoolSearch from "@/components/user/SchoolSearch.vue"
+let timerId = null;
 export default {
     name: "SignUpBasicStudent",
     components: {
@@ -277,6 +283,8 @@ export default {
     },
     data() {
         return {
+            counterOn: false,
+            counter: 0,
             isModalOn:false,
             dialog: false,
             state: 'ins',
@@ -345,6 +353,9 @@ export default {
                 v => /^(?:(010\d{4})|(070\d{4})|(01[1|6|7|8|9]\d{3,4}))(\d{4})$/.test(v) || '유효하지 않은 번호입니다.',
             ],
             userBirth: null,
+            userBirth_rule:[
+                v => !!v || '생년월일은 필수 입력 사항입니다.',
+            ],
             date: new Date().toISOString().substr(0, 10),
             dateFormatted: this.formatDate(new Date().toISOString().substr(0, 10)),
             menu2: false,
@@ -353,9 +364,6 @@ export default {
     },
     methods: {
         ...mapActions("userStore", ["emailSending", "phoneSending", "signUpStudent"]),
-        checkDuplicate(){
-            alert("아이디 체크");
-        },
         async get_certificate_email(){
             await this.emailSending(this.userEmail);
             this.userEmailCheck = '';
@@ -366,7 +374,25 @@ export default {
             // await this.phoneSending(this.userPhone);
             this.userPhoneCheck = '';
             this.finalValidateUserPhone = false;
+            this.counterOn = true;
             this.phoneCertificationCopy = '1234';
+            this.isPhoneFormat = false;
+            this.counter = 150;
+
+            if(timerId){
+                clearTimeout(timerId)
+            }
+            timerId = setInterval(() => {
+                this.counter -= 1;
+
+                if(this.counter <= 0){
+                    this.phoneCertificationCopy = '';
+                    this.isPhoneFormat = true;
+                    clearInterval(timerId)
+                    timerId = null;
+                    this.counterOn = false;
+                }
+            } , 1000)
             // this.phoneCertificationCopy = this.phoneCertification;
         },
         searchSchool(){
@@ -451,6 +477,9 @@ export default {
             if(this.userPhoneCheck == this.phoneCertificationCopy){
                 alert('확인되었습니다');
                 this.finalValidateUserPhone = true;
+                clearInterval(timerId);
+                timerId = null;
+                this.counterOn = false;
             }else{
                 alert('인증번호가 틀렸습니다.');
                 this.userPhoneCheck = '';

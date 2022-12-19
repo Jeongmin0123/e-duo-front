@@ -64,6 +64,11 @@ const routes = [
   //     },  // 이후 추가할 강좌관련 컴포넌트는 여기에 추가
   //   ]
   // }
+  {
+    path: '/assignment',
+    name: 'AssignmentManage',
+    component: () => import('@/components/attendance/AssignmentManage.vue')
+  },
 ]
 
 const router = new VueRouter({

@@ -44,7 +44,8 @@
                             <div v-show="lecture.show">
                             <v-divider></v-divider>
                             <v-card-text>
-                                <student-list :students="students"></student-list>
+                                <!-- <student-list :students="students"></student-list> -->
+                                <student-list :lectureId="lecture.lectureId"></student-list>
                             </v-card-text>
                             </div>
                         </v-expand-transition>
@@ -57,10 +58,18 @@
 </template>
 <script>
 import StudentList from '@/components/attendance/StudentList.vue';
+// import {mapState, mapActions} from "vuex";
+
 export default {
-    name:'AssignmentManage',
+    name:'AppAssignment',
     components: {
         StudentList,
+    },
+    created(){
+        // this.courseId = this.$route.params.courseId;
+        this.courseId = 'KsZ1-teac-9Zw2';
+        // this.courseName = this.$route.params.courseName;
+        this.courseName = 'Network'
     },
     data() {
         return {
@@ -69,24 +78,31 @@ export default {
             show: false,
             switch1: '출석',
             switch2: '결석',
-            courseName: 'Network',
-            lectures:[{name: '1주차-1 : spring Boot'}, {name: '1주차-2 : spring Boot'}, {name: '2주차-1 : spring Boot'},{name: '3주차-1 : spring Boot'}, {name: '3주차-2 : spring Boot'}, {name: '4주차-1 : spring Boot'},{name: '5주차-1 : spring Boot'}, {name: '5주차-2 : spring Boot'}, {name: '6주차-1 : spring Boot'},{name: '7주차-1 : spring Boot'}, {name: '7주차-2 : spring Boot'}, {name: '8주차-1 : spring Boot'},],
-            students:[{name: '장정민', school: '사피고등학교', id: 'jang@test.com', assignment:'1'}, {name: '이다운', school: '강남고등학교', id: 'dawoon12312345678@test.com', assignment:'1'}, {name: '황준현', school: '사피고등학교', id: 'Hwang@test.com', assignment:'0'}, {name: '이영차', school: '사피고등학교', id: 'cha@test.com', assignment:'0'}, {name: '이호준', school: '사피고등학교', id: 'ho@test.com', assignment:'0'}, {name: '서지상', school: '사피고등학교', id: 'Seo@test.com', assignment:'1'}, {name: '정우진', school: '사피고등학교', id: 'Woo@test.com', assignment:'1'}, {name: '박지현', school: '사피고등학교', id: 'Park@test.com', assignment:'0'}, {name: '안태현', school: '사피고등학교', id: 'Ahn@test.com', assignment:'1'},],
+            courseId: '',
+            courseName: '',
+
+            lectures:[{name: '1주차-1 : spring Boot', lectureId: '1'}, {name: '1주차-2 : spring Boot', lectureId: '2'}, {name: '2주차-1 : spring Boot', lectureId: '3'},{name: '3주차-1 : spring Boot', lectureId: '4'}, {name: '3주차-2 : spring Boot', lectureId: '5'}, {name: '4주차-1 : spring Boot', lectureId: '6'},{name: '5주차-1 : spring Boot', lectureId: '7'}, {name: '5주차-2 : spring Boot', lectureId: '8'}, {name: '6주차-1 : spring Boot', lectureId: '9'},{name: '7주차-1 : spring Boot', lectureId: '10'}],
+            // students:[{studentName: '장정민', schoolName: '사피고등학교', id: 'jang@test.com', assignment:'1'}, {studentName: '이다운', schoolName: '강남고등학교', id: 'dawoon12312345678@test.com', assignment:'1'}, {studentName: '황준현', schoolName: '사피고등학교', id: 'Hwang@test.com', assignment:'0'}, {studentName: '이영차', schoolName: '사피고등학교', id: 'cha@test.com', assignment:'0'}, {studentName: '이호준', schoolName: '사피고등학교', id: 'ho@test.com', assignment:'0'}, {studentName: '서지상', schoolName: '사피고등학교', id: 'Seo@test.com', assignment:'1'}, {studentName: '정우진', schoolName: '사피고등학교', id: 'Woo@test.com', assignment:'1'}, {studentName: '박지현', schoolName: '사피고등학교', id: 'Park@test.com', assignment:'0'}, {studentName: '안태현', schoolName: '사피고등학교', id: 'Ahn@test.com', assignment:'1'},],
+            students:[],
             books: ['History', 'Fiction', 'Philosophy'],
             codes: ['C#', 'JavaScript', 'PHP'],
             submitter: [],
         }
     },
+    computed: {
+        // ...mapState("attendanceStore", ["attendances"])
+    },
     methods: {
+        // ...mapActions("attendanceStore", ["getAttendance"]),
         showDetails(item){
-            console.log(item);
-            console.log(item.show);
+            console.log(item.lectureId);
             item.show = !item.show;
             this.$forceUpdate();
         },
         handleClick(item){
             console.log(item);
             console.log(this.submitter);
+            
         },
         addAssignment(item){
             alert(item);

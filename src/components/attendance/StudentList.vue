@@ -1,18 +1,6 @@
 <template>
     <v-form ref="form" @submit.prevent="signUp">
         <v-container>
-            <!-- <v-btn
-                class="ma-1"
-                outlined
-                color="indigo"
-                @click="anyAssignment"
-            >전원 미제출</v-btn>
-            <v-btn
-                class="ma-1"
-                outlined
-                color="indigo"
-                @click="allAssignment"
-            >전원 제출</v-btn> -->
             <v-virtual-scroll
                 :items="studentsCopy"
                 :item-height="80"
@@ -22,16 +10,10 @@
                 <template v-slot="{ item }">
                 <v-list-item @click="handleClick(item)">
                     <v-list-item-content>
-                        <v-list-item-title>{{item.name}}</v-list-item-title>
-                        <v-list-item-subtitle>{{item.school}}</v-list-item-subtitle>
-                        <v-list-item-subtitle class="moveShowing">{{item.id}}</v-list-item-subtitle>
+                        <v-list-item-title>{{item.studentName}}</v-list-item-title>
+                        <v-list-item-subtitle>{{item.schoolName}}</v-list-item-subtitle>
+                        <v-list-item-subtitle class="moveShowing">{{item.studentId}}</v-list-item-subtitle>
                     </v-list-item-content>
-                    <!-- <v-list-item-content>
-                        <v-list-item-subtitle>{{item.school}}</v-list-item-subtitle>
-                    </v-list-item-content> 
-                    <v-list-item-content>
-                        <v-list-item-subtitle class="moveShowing">{{item.id}}</v-list-item-subtitle>
-                    </v-list-item-content> -->
                     
                     <v-list-item-action>
                         <v-switch
@@ -76,37 +58,234 @@
 <script>
 export default {
     props: {
-        students: Array,
+        lectureId: String,
     },
-    created() {
-        this.students.forEach((student)=>{
-            this.studentsCopy.push(Object.assign({}, student));
-            if(student.assignment==1){
-                this.submitter.push(student);
+    mounted() {
+        //lectureId로 attendances 초기화
+
+
+        this.attendances.forEach((attendance)=>{
+            if(attendance.lectureId == this.lectureId){
+                this.studentsCopy.push(Object.assign({}, attendance));
+            }
+            if(attendance.assignment==1){
+                this.submitter.push(Object.assign({}, attendance));
             }
         })
+        console.log(this.studentsCopy);
     },
     watch: {
+        students: function(){
+        },
         studentsCopy: function(){
             console.log(this.studentsCopy);
         },
-        // submitter: function(){
-        //     // console.log(this.submitter);
-        //     // this.students.forEach((student)=>{
-        //     //     student.assignment = 0;
-        //     // })
-        //     // this.submitter.forEach((submit)=>{
-        //     //     if(student.includes())
-                
-        //     // })
-        //     // this.submitter.forEach((submit)=>{
-        //     //     var student = this.students.find(submit);
-        //     //     student.assignment = 1;
-        //     // })
-        // }
     },
     data() {
         return {
+            attendances:[
+                {
+                    attendanceId:"1",
+                    lectureId: "1",
+                    studentId:"ssafy1",
+                    studentName:"이다운",
+                    checkIn:"0",
+                    schoolName:"싸피고등학교",
+                    assignment:"1",
+                    doneDate:"2022-12-12",
+                    testScore: "89",
+                    phone: "01022222222",
+                    parentPhone: "01012341234",
+                    parent: "모",
+                },
+                {
+                    attendanceId:"1",
+                    lectureId: "1",
+                    studentId:"ssafy2",
+                    studentName:"이호준",
+                    checkIn:"0",
+                    schoolName:"싸피중학교",
+                    assignment:"0",
+                    doneDate:"",
+                    testScore: "91",
+                    phone: "01050423969",
+                    parentPhone: "01012341234",
+                    parent: "부",
+                },
+                {
+                    attendanceId:"1",
+                    lectureId: "1",
+                    studentId:"ssafy3",
+                    studentName:"이영차",
+                    checkIn:"0",
+                    schoolName:"싸피고등학교",
+                    assignment:"1",
+                    doneDate:"2022-12-12",
+                    testScore: "89",
+                    phone: "01022222222",
+                    parentPhone: "01012341234",
+                    parent: "모",
+                },
+                {
+                    attendanceId:"1",
+                    lectureId: "1",
+                    studentId:"ssafy4",
+                    studentName:"황준현",
+                    checkIn:"0",
+                    schoolName:"싸피중학교",
+                    assignment:"0",
+                    doneDate:"",
+                    testScore: "91",
+                    phone: "01050423969",
+                    parentPhone: "01012341234",
+                    parent: "부",
+                },
+                {
+                    attendanceId:"1",
+                    lectureId: "1",
+                    studentId:"ssafy5",
+                    studentName:"장정민",
+                    checkIn:"0",
+                    schoolName:"싸피고등학교",
+                    assignment:"1",
+                    doneDate:"2022-12-12",
+                    testScore: "89",
+                    phone: "01022222222",
+                    parentPhone: "01012341234",
+                    parent: "모",
+                },
+                {
+                    attendanceId:"1",
+                    lectureId: "1",
+                    studentId:"ssafy6",
+                    studentName:"안태현",
+                    checkIn:"0",
+                    schoolName:"싸피중학교",
+                    assignment:"0",
+                    doneDate:"",
+                    testScore: "91",
+                    phone: "01050423969",
+                    parentPhone: "01012341234",
+                    parent: "부",
+                },
+                {
+                    attendanceId:"1",
+                    lectureId: "1",
+                    studentId:"ssafy7",
+                    studentName:"박지현",
+                    checkIn:"0",
+                    schoolName:"싸피중학교",
+                    assignment:"0",
+                    doneDate:"",
+                    testScore: "91",
+                    phone: "01050423969",
+                    parentPhone: "01012341234",
+                    parent: "부",
+                },
+                {
+                    attendanceId:"1",
+                    lectureId: "1",
+                    studentId:"ssafy8",
+                    studentName:"정우진",
+                    checkIn:"0",
+                    schoolName:"싸피중학교",
+                    assignment:"0",
+                    doneDate:"",
+                    testScore: "91",
+                    phone: "01050423969",
+                    parentPhone: "01012341234",
+                    parent: "부",
+                },
+
+
+
+
+                {
+                    attendanceId:"1",
+                    lectureId: "2",
+                    studentId:"ssafy1",
+                    studentName:"이다운",
+                    checkIn:"0",
+                    schoolName:"싸피고등학교",
+                    assignment:"1",
+                    doneDate:"2022-12-12",
+                    testScore: "89",
+                    phone: "01022222222",
+                    parentPhone: "01012341234",
+                    parent: "모",
+                },
+                {
+                    attendanceId:"1",
+                    lectureId: "2",
+                    studentId:"ssafy2",
+                    studentName:"이호준",
+                    checkIn:"0",
+                    schoolName:"싸피중학교",
+                    assignment:"0",
+                    doneDate:"",
+                    testScore: "91",
+                    phone: "01050423969",
+                    parentPhone: "01012341234",
+                    parent: "부",
+                },
+                {
+                    attendanceId:"1",
+                    lectureId: "2",
+                    studentId:"ssafy3",
+                    studentName:"이영차",
+                    checkIn:"0",
+                    schoolName:"싸피고등학교",
+                    assignment:"1",
+                    doneDate:"2022-12-12",
+                    testScore: "89",
+                    phone: "01022222222",
+                    parentPhone: "01012341234",
+                    parent: "모",
+                },
+                {
+                    attendanceId:"1",
+                    lectureId: "2",
+                    studentId:"ssafy4",
+                    studentName:"황준현",
+                    checkIn:"0",
+                    schoolName:"싸피중학교",
+                    assignment:"0",
+                    doneDate:"",
+                    testScore: "91",
+                    phone: "01050423969",
+                    parentPhone: "01012341234",
+                    parent: "부",
+                },
+                {
+                    attendanceId:"1",
+                    lectureId: "2",
+                    studentId:"ssafy5",
+                    studentName:"장정민",
+                    checkIn:"0",
+                    schoolName:"싸피고등학교",
+                    assignment:"1",
+                    doneDate:"2022-12-12",
+                    testScore: "89",
+                    phone: "01022222222",
+                    parentPhone: "01012341234",
+                    parent: "모",
+                },
+                {
+                    attendanceId:"1",
+                    lectureId: "2",
+                    studentId:"ssafy6",
+                    studentName:"안태현",
+                    checkIn:"0",
+                    schoolName:"싸피중학교",
+                    assignment:"0",
+                    doneDate:"",
+                    testScore: "91",
+                    phone: "01050423969",
+                    parentPhone: "01012341234",
+                    parent: "부",
+                },
+            ],
+            students:[],
             studentsCopy:[],
             submitter:[],
             switch1: '제출',
